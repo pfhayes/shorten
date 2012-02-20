@@ -19,7 +19,7 @@ success = False
 for line in output.split('\n') :
   if line.startswith('Location:' ) :
     success = True
-    print line[len('Location: '):]
+    print line[len('Location: '):].replace('patrickhay.es', 'phay.es')
     exit(0)
 
 if not success :
