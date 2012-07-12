@@ -9,7 +9,11 @@ if len(sys.argv) <= 1 :
 url = sys.argv[1]
 code = sys.argv[2] if len(sys.argv) >= 3 else None
 
-command = ['curl', '-s', '-i', 'http://patrickhay.es/shorten', '-F', 'url=' + url]
+# -k    Use insecre connection, because heroku owns my SSL cert
+# -s    Silent
+# -i    Include HTTP headers in output (so we can get the shortened response)
+# -F    post data
+command = ['curl', '-k', '-s', '-i', 'https://patrickhay.es/shorten', '-F', 'url=' + url]
 if code :
   command.extend(['-F', 'code=' + code])
 
