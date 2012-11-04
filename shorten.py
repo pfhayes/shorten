@@ -3,17 +3,27 @@
 import sys, subprocess
 
 if len(sys.argv) <= 1 :
-  print 'Usage: shorten url [code]'
+  print 'Usage: shorten credential_file url [code]'
+  print 'Credential file must contain username:password for HTTP authorization'
   exit(1)
 
-url = sys.argv[1]
-code = sys.argv[2] if len(sys.argv) >= 3 else None
+credential_file = sys.argv[1]
+url = sys.argv[2]
+code = sys.argv[3] if len(sys.argv) >= 4 else None
 
-# -k    Use insecre connection, because heroku owns my SSL cert
-# -s    Silent
-# -i    Include HTTP headers in output (so we can get the shortened response)
-# -F    post data
-command = ['curl', '-k', '-s', '-i', 'https://patrickhay.es/shorten', '-F', 'url=' + url]
+host='https://patrickhay.es'
+#host='localhost:5000'
+
+username_and_password = open(credential_file).readlines()[0].strip()
+
+command = ['curl',
+  '-k', # Because heroku owns my SSL cert
+  '-s', # silent
+  '-i', # Include HTTP headers in output (so we can get the shortened response)
+  '-F', 'url=' + url,  # post data
+  '-u', username_and_password,  # http basic auth
+  host + '/shorten',
+  ]
 if code :
   command.extend(['-F', 'code=' + code])
 
