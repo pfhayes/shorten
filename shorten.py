@@ -2,7 +2,7 @@
 
 import sys, subprocess
 
-if len(sys.argv) <= 1 :
+if len(sys.argv) <= 2 :
   print 'Usage: shorten credential_file url [code]'
   print 'Credential file must contain username:password for HTTP authorization'
   exit(1)
@@ -28,6 +28,8 @@ if code :
   command.extend(['-F', 'code=' + code])
 
 output = subprocess.check_output(command)
+
+print output
 
 success = False
 for line in output.split('\n') :
